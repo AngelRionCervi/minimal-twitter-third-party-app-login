@@ -8,7 +8,6 @@
   },
   "dependencies": {
 		"dotenv": "^10.0.0",
-		"prompt-sync": "^4.2.0",
 		"twitter-api-v2": "^1.12.9"
 	},
   "author": "",
