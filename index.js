@@ -8,9 +8,17 @@ const rl = readline.createInterface({ input: process.stdin, output: process.stdo
 const prompt = (query) => new Promise((resolve) => rl.question(query, resolve))
 
 ;(async () => {
-  const { TWITTER_API_KEY, TWITTER_SECRET_KEY } = process.env
+  const { TWITTER_API_KEY, TWITTER_SECRET_KEY, TWITTER_ACCESS_TOKEN, TWITTER_ACCESS_SECRET } = process.env
 
   if (!TWITTER_API_KEY || !TWITTER_SECRET_KEY) return
+
+  if (TWITTER_ACCESS_TOKEN && TWITTER_ACCESS_SECRET) {
+    const loggedClient = new TwitterApi({ appKey: TWITTER_API_KEY, appSecret: TWITTER_SECRET_KEY, accessToken: TWITTER_ACCESS_TOKEN, accessSecret: TWITTER_ACCESS_SECRET })
+    const postTweet = await loggedClient.v2.tweet('Hello elon musk ' + Math.random())
+    console.log({ postTweet })
+
+    return
+  }
 
   const temporaryClient = new TwitterApi({ appKey: TWITTER_API_KEY, appSecret: TWITTER_SECRET_KEY })
   try {
@@ -30,7 +38,7 @@ const prompt = (query) => new Promise((resolve) => rl.question(query, resolve))
     })
     const { client: loggedClient, accessToken, accessSecret } = await client.login(pin)
     console.log({ loggedClient, accessToken, accessSecret })
-    const postTweet = await loggedClient.v2.tweet('Hello elon musk')
+    const postTweet = await loggedClient.v2.tweet('Hello elon musk ' + Math.random())
     console.log({ postTweet })
   } catch (err) {
     console.log('some err', err)
